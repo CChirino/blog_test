@@ -1,6 +1,6 @@
 <?php
-use Illuminate\Support\Facades\Redirect;
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\Category;
@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return Inertia::render('List', ['categories' => $categories]);
+        return Inertia::render('Categories/ListCategory', ['categories' => $categories]);
     }
 
     /**
@@ -25,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Form');
+        return Inertia::render('Categories/FormCreateCategory');
 
     }
 
@@ -43,10 +43,8 @@ class CategoryController extends Controller
                 'slug' => 'required',
             ]
         );
-
         Category::create($request->all());
-
-        return Redirect::route('category.index');
+        return Redirect::route('categories.index');
 
     }
 
@@ -70,7 +68,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        return Inertia::render('EditForm', ['id' => $id]);
+        $categories = Category::find($id);
+        return Inertia::render('Categories/EditFormCategory', ['categories' => $categories]);
 
     }
 
@@ -85,7 +84,7 @@ class CategoryController extends Controller
     {
         $categories = Category::find($id);
         $categories->update($request->all());
-        return Redirect::route('category.index');
+        return Redirect::route('categories.index');
     }
 
     /**
@@ -98,6 +97,6 @@ class CategoryController extends Controller
     {
         $categories = Category::find($id);
         $categories->delete();
-        return Redirect::route('category.index');
+        return Redirect::route('categories.index');
     }
 }

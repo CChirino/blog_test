@@ -1,9 +1,13 @@
 <?php
-use Illuminate\Support\Facades\Redirect;
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 class PostController extends Controller
 {
@@ -14,8 +18,12 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
-        return Inertia::render('List', ['posts' => $posts]);
+        $posts = DB::table('posts')
+                ->join('categories','posts.category_id', '=','categories.id' )
+                ->whereNull('posts.deleted_at')
+                ->select('posts.*','categories.name')
+                ->get();
+        return Inertia::render('Posts/ListPost', ['posts' => $posts]);
     }
 
     /**
@@ -25,7 +33,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Form');
+        $categories = Category::all();
+        return Inertia::render('Posts/FormCreatePost', ['categories' => $categories]);
 
     }
 
@@ -47,7 +56,7 @@ class PostController extends Controller
             ]
         );
 
-        Product::create($request->all());
+        Post::create($request->all());
 
         return Redirect::route('posts.index');
     }
@@ -61,6 +70,7 @@ class PostController extends Controller
     public function show($id)
     {
         $posts = Post::find($id);
+        return Inertia::render('Posts/ShowPost', ['posts' => $posts]);
 
     }
 
@@ -72,7 +82,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        return Inertia::render('EditForm', ['id' => $id]);
+        return Inertia::render('Posts/EditFormPost', ['posts' => $posts]);
 
     }
 
