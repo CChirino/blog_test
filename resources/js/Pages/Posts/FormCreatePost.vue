@@ -10,6 +10,7 @@
               <div class="px-4 py-5  bg-white sm:p-6">
                 <div class="grid grid-cols-6 gap-6">
                   <div class="col-span-6 sm:col-span-4">
+                    <div v-if="form.user === user.id"></div>
                     <label class="block text-sm font-medium text-gray-700">Titulo del articulos:</label>
                     <input type="text" name="name" id="name" autocomplete="text" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" v-model="form.title" />
                     <div v-if="errors.title">El Titulo es Requerido</div>
@@ -21,6 +22,14 @@
                     <div v-if="errors.description">La Descripcion es Requerido</div>
                   </div>
                  <div class="col-span-6 sm:col-span-4">
+                    <label class="block text-sm font-medium text-gray-700">Contenido:</label>
+                      <input
+                                        class="form-control mb-1"
+                                        placeholder=""
+                                        type="file" id="file" ref="file" v-on:change="onChangeFileUpload()"
+                      />                  
+                  </div>
+                  <div class="col-span-6 sm:col-span-4">
                     <label class="block text-sm font-medium text-gray-700">Contenido:</label>
                     <textarea class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" v-model="form.content" rows="4"></textarea>                    
                     <div v-if="errors.content">El Contenido es Requerido</div>
@@ -48,7 +57,7 @@
                         <input type="radio" id="radio-example-2" name="radio" class="h-4 w-4 text-gray-700 px-3 py-3 border rounded mr-2" :value=3 v-model="form.status">
                         <label for="radio-example-2" class="text-gray-600">Inactivo</label>
                     </div>
-                  <div v-if="errors.category_id">La Categoria es Requerida</div>
+                  <div v-if="errors.status">El status es Requerido</div>
                   </div>
                 </div>
               </div>
@@ -81,19 +90,29 @@ export default {
   data() {
     return {
       form: {
-        title: null,
-        description: null,
-        content: null,
-        status: null,
-        user_id: 1,
-        category_id: null,
+        title: "",
+        description: "",
+        content: "",
+        status: "",
+        category_id: "",
+        file: "",
       },
     };
   },
   methods: {
     submit() {
-      this.$inertia.post(route('posts.store'), this.form);
+      let formData = new FormData();
+                formData.append("title", this.form.title);
+                formData.append("description", this.form.description);
+                formData.append("content", this.form.content);
+                formData.append("status", this.form.status);
+                formData.append("category_id", this.form.category_id);
+                formData.append("file", this.form.file);
+      this.$inertia.post(route('posts.store'), formData);
     },
+    onChangeFileUpload(){
+        this.form.file = this.$refs.file.files[0];
+    }
   },
 };
 </script>

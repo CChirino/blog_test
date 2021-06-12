@@ -19,8 +19,7 @@ class CreatePostsTable extends Migration
             $table->string('description');
             $table->text('content');
             $table->enum('status',[1,2,3]);
-            $table->unsignedBigInteger('user_id');            
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('file');
             $table->unsignedBigInteger('category_id');            
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->softDeletes();

@@ -23,7 +23,7 @@
               <thead class="bg-gray-50">
                 <tr>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Nombre del Articulo
+                    Imagen Principal
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Descripcion
@@ -32,7 +32,10 @@
                     Categorias
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
+                    Fecha de Creacion
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Fecha de Actualizacion
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Transacciones
@@ -41,6 +44,9 @@
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 <tr v-for="posts in posts" :key="posts.id">
+                  <td class="pt-4 pb-4 pr-2 pl-2">
+                      <img width="160" :src="'http://127.0.0.1:8000/storage/articles/' + posts.file">
+                  </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
                       <div class="ml-4">
@@ -51,21 +57,22 @@
                     </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">{{ posts.description }}</div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-gray-900">{{ posts.name }}</div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">{{ posts.status }}</div>
+                    <div class="text-sm text-gray-900">{{ posts.created_at }}</div>
                   </td>
-                  <td class="px-10 py-10 pl-6 pr-6  whitespace-nowrap text-sm text-gray-500 inline-block text">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">{{ posts.updated_at }}</div>
+                  </td>
+
+                  <td class="px-6 py-4 whitespace-nowrap">
                     <inertia-link :href="route('posts.edit', posts.id)" class="pl-2 pr-2" > 
                                 Editar
                     </inertia-link>
                       <!-- <TrashIcon class="h-5 w-5"  /> -->
                     <inertia-link
-                      class="pl-2 pr-2" 
+                      class="pl-2 pr-2 " 
                       method="delete"
                       :href="route('posts.destroy', posts.id)">
                       Borrar
@@ -84,6 +91,7 @@
 </template>
 
 <script>
+
 import AppLayout from "@/Layouts/AppLayout";
 export default {
     props: {

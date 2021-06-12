@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StorePostRequest;
 
 
 class PostController extends Controller
@@ -52,11 +53,21 @@ class PostController extends Controller
                 'description' => 'required',
                 'content' => 'required',
                 'status' => 'required',
-
             ]
         );
-
-        Post::create($request->all());
+        $posts = new Post();
+        $posts->title = $request->title;
+        $posts->description = $request->description;
+        $posts->content = $request->content;
+        $posts->status = $request->status;
+        $posts->category_id = $request->category_id;
+        if ($request->hasFile('file')) {
+            $filenameWithExt = $request->file->getClientOriginalName ();// Get Filename
+            $fileNameToStore = $filenameWithExt;// Upload Image
+            $path = $request->file('file')->move('storage/articles', $fileNameToStore,'public');
+            $posts->file = $fileNameToStore;
+            }
+        $posts->save();
 
         return Redirect::route('posts.index');
     }
@@ -82,7 +93,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        return Inertia::render('Posts/EditFormPost', ['posts' => $posts]);
+        $posts = Post::find($id);
+        $categories = Category::all();
+        return Inertia::render('Posts/EditFormPost', ['posts' => $posts, 'categories' => $categories]);
 
     }
 
@@ -96,7 +109,6 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $posts = Post::find($id);
-        $posts->update($request->all());
         return Redirect::route('posts.index');
     }
 

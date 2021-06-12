@@ -1,5 +1,6 @@
 <?php
-
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CategoryHomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Foundation\Application;
@@ -17,15 +18,11 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+Route::get('/',  function () {
+    return redirect('home');
 });
-
+Route::resource('home', HomeController::class);
+Route::resource('category', CategoryHomeController::class);
 Route::resource('posts', PostController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
@@ -33,5 +30,7 @@ Route::resource('categories', CategoryController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
+require __DIR__.'/auth.php';
