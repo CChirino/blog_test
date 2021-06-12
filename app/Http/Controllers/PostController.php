@@ -109,6 +109,13 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $posts = Post::find($id);
+        if ($request->hasFile('file')) {
+            $filenameWithExt = $request->file->getClientOriginalName ();// Get Filename
+            $fileNameToStore = $filenameWithExt;// Upload Image
+            $path = $request->file('file')->move('storage/articles', $fileNameToStore,'public');
+            $posts->file = $fileNameToStore;
+        }
+        $posts->update($request->all());
         return Redirect::route('posts.index');
     }
 

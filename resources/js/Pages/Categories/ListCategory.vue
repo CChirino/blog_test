@@ -47,11 +47,11 @@
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-gray-900">{{ category.slug }}</div>
                   </td>
-                  <td class="px-10 py-10 pl-6 pr-6  whitespace-nowrap text-sm text-gray-500 inline-block text">
+                  <td class="px-6 py-4 whitespace-nowrap">
                     <inertia-link :href="route('categories.edit', category.id)" class="pl-2 pr-2" > 
                                 Editar
                     </inertia-link>
-                      <!-- <TrashIcon class="h-5 w-5"  /> -->
+                      <!-- <TrashIcon class="h-5 w-5"  />  -->
                     <inertia-link
                       class="pl-2 pr-2" 
                       method="delete"

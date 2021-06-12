@@ -26,7 +26,7 @@
                     Imagen Principal
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Descripcion
+                    Titulo
                   </th>
                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Categorias
@@ -70,7 +70,6 @@
                     <inertia-link :href="route('posts.edit', posts.id)" class="pl-2 pr-2" > 
                                 Editar
                     </inertia-link>
-                      <!-- <TrashIcon class="h-5 w-5"  /> -->
                     <inertia-link
                       class="pl-2 pr-2 " 
                       method="delete"
@@ -91,7 +90,6 @@
 </template>
 
 <script>
-
 import AppLayout from "@/Layouts/AppLayout";
 export default {
     props: {

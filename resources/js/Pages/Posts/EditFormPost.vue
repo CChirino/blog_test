@@ -76,22 +76,30 @@ export default {
   props: ["posts", "categories"],
   data() {
     return {
-      form: {
+      form:{
         title: this.$props.posts.title,
         description: this.$props.posts.description,
         content: this.$props.posts.content,
         category_id: this.$props.posts.category_id,
         status: this.$props.posts.status,
+        file:this.$props.posts.file ,
       },
     };
   },
   methods: {
     submit() {
-      this.$inertia.put(
-        route("posts.update", this.$props.posts.id),
-        this.form
-      );
+            let formData = new FormData();
+                formData.append("title", this.form.title);
+                formData.append("description", this.form.description);
+                formData.append("content", this.form.content);
+                formData.append("status", this.form.status);
+                formData.append("category_id", this.form.category_id);
+                formData.append("file", this.form.file);
+      this.$inertia.put(route('posts.update', this.$props.posts.id),this.form );
     },
+      onChangeFileUpload(){
+        this.form.file = this.$refs.file.files[0];
+    }
   },
 };
 </script>
