@@ -50,6 +50,10 @@ Generamos el key de encriptacion
 ```
 php artisan key:generate
 ```
+Generamos el link, para el guardado de las imagenes
+```
+php artisan storage:link
+```
 Despues de haber configurado nuestro env vamos a generar la base de datos
 ```
 php artisan migrate:fresh --seed
